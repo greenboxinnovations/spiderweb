@@ -248,12 +248,39 @@ sig3.addSRoad(s3r20)
 sig3.addSRoad(s3r31)
 sig3.addSRoad(s3r13)
 
+s2r02 = S_Road(p8, p9, 90, "02")
+s2r20 = S_Road(p22, p23, -90, "20")
+s2r31 = S_Road(p28, p29, 0, "31")
+s2r13 = S_Road(p38, p39, 180, "13")
+sig2.addSRoad(s2r02)
+sig2.addSRoad(s2r20)
+sig2.addSRoad(s2r31)
+sig2.addSRoad(s2r13)
+
+s4r02 = S_Road(p10, p11, 90, "02")
+s4r20 = S_Road(p20, p21, -90, "20")
+s4r31 = S_Road(p34, p35, 0, "31")
+s4r13 = S_Road(p44, p45, 180, "13")
+sig4.addSRoad(s4r02)
+sig4.addSRoad(s4r20)
+sig4.addSRoad(s4r31)
+sig4.addSRoad(s4r13)
+
 
 
 
 # make combinations out of roads
 destination1 = [r1,[sig1,'02'],r2,[sig3,'02'],r3]
 destination2 = [r7,[sig3,"20"],r8,[sig1,"20"],r9]
+
+destination3 = [r4,[sig2,'02'],r5,[sig4,'02'],r6]
+destination4 = [r10,[sig4,"20"],r11,[sig2,'20'],r12]
+
+destination5 = [r13,[sig1,'31'],r14,[sig2,'31'],r15]
+destination6 = [r19,[sig2,"13"],r20,[sig1,"13"],r21]
+
+destination7 = [r16,[sig3,'31'],r17,[sig4,'31'],r18]
+destination8 = [r22,[sig4,"13"],r23,[sig3,'13'],r24]
 
 
 # groups to handle intersections
@@ -308,6 +335,12 @@ class CarFactory():
 
 cf = CarFactory(-1, destination1)
 cf2 = CarFactory(-1, destination2)
+cf3 = CarFactory(-1, destination3)
+cf4 = CarFactory(-1, destination4)
+cf5 = CarFactory(-1, destination5)
+cf6 = CarFactory(-1, destination6)
+cf7 = CarFactory(-1, destination7)
+cf8 = CarFactory(-1, destination8)
 
 while not crashed:
     # events
@@ -404,6 +437,12 @@ while not crashed:
 
     cf.spawn()
     cf2.spawn()
+    cf3.spawn()
+    cf4.spawn()
+    cf5.spawn()
+    cf6.spawn()
+    cf7.spawn()
+    cf8.spawn()
     car_group.updateGroup()
     car_group.draw(screen)
 
