@@ -206,18 +206,22 @@ road_watcher.add(r24)
 
 # pass time to each signal
 now = pygame.time.get_ticks()
-
+# create signals 
 s_group = pygame.sprite.Group()
 sig1 = Signal([200,150])
-sig1.addTimeList([10,8,6,5])
-sig1.setTime(now)
-# print(sig1.getTopRight())
-# quit()
-
-# create signals 
 sig2 = Signal([500,150])
 sig3 = Signal([200,400])
 sig4 = Signal([500,400])
+
+sig1.addTimeList([8,8,8,8])
+sig2.addTimeList([8,8,8,8])
+sig3.addTimeList([8,8,8,8])
+sig4.addTimeList([8,8,8,8])
+sig1.setTime(now)
+sig2.setTime(now)
+sig3.setTime(now)
+sig4.setTime(now)
+# print(sig1.getTopRight())
 # add to group
 s_group.add(sig1)
 s_group.add(sig2)
@@ -226,22 +230,30 @@ s_group.add(sig4)
 
 
 # REMEBER SEQUENCE MATTERS
-# sr1 = S_Road(p4, [300,230], 90, "03")
-# sr2 = S_Road([300,230], p5, 180, "03")
-# sr3 = S_Road(p4, [200,230], 90, "02")
-# sr4 = S_Road([200,230], p7, 90, "02")
+s1r02 = S_Road(p2, p3, 90, "02")
+s1r20 = S_Road(p16, p17, -90, "20")
+s1r31 = S_Road(p26, p27, 0, "31")
+s1r13 = S_Road(p40, p41, 180, "13")
+sig1.addSRoad(s1r02)
+sig1.addSRoad(s1r20)
+sig1.addSRoad(s1r31)
+sig1.addSRoad(s1r13)
 
-# sig1.addSRoad(sr1)
-# sig1.addSRoad(sr2)
-# sig1.addSRoad(sr3)
-# sig1.addSRoad(sr4)
+s3r02 = S_Road(p4, p5, 90, "02")
+s3r20 = S_Road(p14, p15, -90, "20")
+s3r31 = S_Road(p32, p33, 0, "31")
+s3r13 = S_Road(p46, p47, 180, "13")
+sig3.addSRoad(s3r02)
+sig3.addSRoad(s3r20)
+sig3.addSRoad(s3r31)
+sig3.addSRoad(s3r13)
 
 
 
 
 # make combinations out of roads
-destination1 = [r22,r23,r24]
-# destination2 = [r2,[sig1,"02"],r3]
+destination1 = [r1,[sig1,'02'],r2,[sig3,'02'],r3]
+destination2 = [r7,[sig3,"20"],r8,[sig1,"20"],r9]
 
 
 # groups to handle intersections
@@ -295,7 +307,7 @@ class CarFactory():
                 self.counter += 1
 
 cf = CarFactory(-1, destination1)
-# cf2 = CarFactory(-1, destination2)
+cf2 = CarFactory(-1, destination2)
 
 while not crashed:
     # events
@@ -317,81 +329,81 @@ while not crashed:
     # collision code
     # far collision
     # --------------------------------------------
-    # col_far = []
-    # result_far = pygame.sprite.groupcollide(body_sect, far_sect, False, False)
-    # # print(result_far)
-    # for sprite in result_far:
-    #     if result_far[sprite]:
-    #         # print(result_far[sprite])
-    #         for far in result_far[sprite]:                
-    #             if far in far_sect:
-    #                 # far.groups()[1] = car single
-    #                 cg = far.groups()[1]
-    #                 # print(cg)
-    #                 cg.setCarAcc(0.2)
-    #                 # cg.setCarColor((0,0,255))
-    #                 # # add to compare list
-    #                 col_far.append(cg)
+    col_far = []
+    result_far = pygame.sprite.groupcollide(body_sect, far_sect, False, False)
+    # print(result_far)
+    for sprite in result_far:
+        if result_far[sprite]:
+            # print(result_far[sprite])
+            for far in result_far[sprite]:                
+                if far in far_sect:
+                    # far.groups()[1] = car single
+                    cg = far.groups()[1]
+                    # print(cg)
+                    cg.setCarAcc(0.2)
+                    # cg.setCarColor((0,0,255))
+                    # # add to compare list
+                    col_far.append(cg)
 
-    # # revert cars to original acceleration
-    # # once they are out of the collision zone
-    # for revert_far in car_group.getList():
-    #     if revert_far not in col_far:
-    #         revert_far.setCarAcc(1.1)
-
-
-    # # near collision
-    # col_near = []
-    # result_near = pygame.sprite.groupcollide(body_sect, near_sect, False, False)
-    # # print(result_near)
-    # for sprite2 in result_near:
-    #     if result_near[sprite2]:
-    #         for near in result_near[sprite2]:    
-    #             if near in near_sect:
-    #                 # near.groups()[1] = car single
-    #                 # print(near.groups()[1])
-    #                 cg2 = near.groups()[1]
-    #                 # cg2.setCarColor((0,0,255))
-    #                 cg2.setCarAcc(0.0)
-    #                 col_near.append(cg2)
-
-    # # revert cars to original acceleration
-    # # once they are out of the collision zone
-    # for revert_near in car_group.getList():
-    #     if revert_near not in col_near:
-    #         revert_near.setCarAcc(1.1)
+    # revert cars to original acceleration
+    # once they are out of the collision zone
+    for revert_far in car_group.getList():
+        if revert_far not in col_far:
+            revert_far.setCarAcc(1.1)
 
 
-    # result_sig = pygame.sprite.groupcollide(body_sect, s_group, False, False)
-    # for sprite3 in result_sig:
-    #     # each car-body
+    # near collision
+    col_near = []
+    result_near = pygame.sprite.groupcollide(body_sect, near_sect, False, False)
+    # print(result_near)
+    for sprite2 in result_near:
+        if result_near[sprite2]:
+            for near in result_near[sprite2]:    
+                if near in near_sect:
+                    # near.groups()[1] = car single
+                    # print(near.groups()[1])
+                    cg2 = near.groups()[1]
+                    # cg2.setCarColor((0,0,255))
+                    cg2.setCarAcc(0.0)
+                    col_near.append(cg2)
+
+    # revert cars to original acceleration
+    # once they are out of the collision zone
+    for revert_near in car_group.getList():
+        if revert_near not in col_near:
+            revert_near.setCarAcc(1.1)
+
+
+    result_sig = pygame.sprite.groupcollide(body_sect, s_group, False, False)
+    for sprite3 in result_sig:
+        # each car-body
         
-    #     # quit()
-    #     if result_sig[sprite3]:
-    #         for s in result_sig[sprite3]:
-    #             # each signal
-    #             # s.setColor((0,0,0))
-    #             sprite3.setColor((0,0,255))
-    #             # print(sprite3.groups()[1])
-    #             if not sprite3.canGo(s):
-    #                 sprite3.setAcc(0.0)
-    #             else:
-    #                 sprite3.setAcc(1.1)
+        # quit()
+        if result_sig[sprite3]:
+            for s in result_sig[sprite3]:
+                # each signal
+                # s.setColor((0,0,0))
+                # sprite3.setColor((0,0,255))
+                # print(sprite3.groups()[1])
+                if not sprite3.canGo(s):
+                    sprite3.setAcc(0.0)
+                else:
+                    sprite3.setAcc(1.1)
 
 
    
-    # # cycle through each signal
-    # # change the bool list to allow cars to pass
-    # # get a time instance
-    # now = pygame.time.get_ticks()
-    # for sig_single in s_group:
-    #     sig_single.updateBoolArray(now)
-    #     # access the time array
-    #     # if passed make bool true
+    # cycle through each signal
+    # change the bool list to allow cars to pass
+    # get a time instance
+    now = pygame.time.get_ticks()
+    for sig_single in s_group:
+        sig_single.updateBoolArray(now)
+        # access the time array
+        # if passed make bool true
     # --------------------------------------------
 
     cf.spawn()
-    # cf2.spawn()
+    cf2.spawn()
     car_group.updateGroup()
     car_group.draw(screen)
 
